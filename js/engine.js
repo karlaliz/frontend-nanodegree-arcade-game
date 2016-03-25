@@ -21,13 +21,9 @@ var Engine = (function(global) {
      */
     var doc = global.document,
         win = global.window,
-        canvas = doc.createElement('canvas'),
+        canvas = doc.getElementById('canvas'),
         ctx = canvas.getContext('2d'),
         lastTime;
-
-    canvas.width = 505;
-    canvas.height = 606;
-    doc.body.appendChild(canvas);
 
     /* This function serves as the kickoff point for the game loop itself
      * and handles properly calling the update and render methods.
@@ -56,7 +52,15 @@ var Engine = (function(global) {
         /* Use the browser's requestAnimationFrame function to call this
          * function again as soon as the browser is able to draw another frame.
          */
+        if (game.gameOver) { 
+            displayGameOver();
+            return;
+        }        
         win.requestAnimationFrame(main);
+    }
+
+    function displayGameOver() {
+
     }
 
     /* This function does some initial setup that should only occur once,
@@ -80,7 +84,7 @@ var Engine = (function(global) {
      */
     function update(dt) {
         updateEntities(dt);
-        // checkCollisions();
+        checkCollisions();
     }
 
     /* This is called by the update function and loops through all of the
@@ -95,6 +99,12 @@ var Engine = (function(global) {
             enemy.update(dt);
         });
         player.update();
+    }    
+
+    function checkCollisions() {
+        allEnemies.forEach(function(enemy) {
+            player.checkCollisions(enemy);
+        });
     }
 
     /* This function initially draws the "game level", it will then call
