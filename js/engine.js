@@ -16,8 +16,7 @@
 
 var Engine = (function(global) {
     /* Predefine the variables we'll be using within this scope,
-     * create the canvas element, grab the 2D context for that canvas
-     * set the canvas elements height/width and add it to the DOM.
+     * call the canvas element, grab the 2D context for that canvas.
      */
     var doc = global.document,
         win = global.window,
@@ -60,6 +59,9 @@ var Engine = (function(global) {
         win.requestAnimationFrame(main);
     }
 
+    /*This funtion update the canvas header with information about, name of
+     *the game, number of lives and  score. 
+    */
     function renderHeader() {
         var canvas = document.getElementById("canvasHeader");
         var ctx = canvas.getContext("2d");
@@ -70,16 +72,18 @@ var Engine = (function(global) {
         ctx.fillText("Arcade Game", canvas.width/2, canvas.height/2);
 
         ctx.font = "18px Comic Sans MS";
-        ctx.fillStyle = "#FF6600";
+        ctx.fillStyle = "#FFCC00";
         ctx.textAlign = "left";
         ctx.fillText("Lives: "+player.lives, 20, 75);
 
         ctx.font = "18px Comic Sans MS";
-        ctx.fillStyle = "#FF6600";
+        ctx.fillStyle = "#FFCC00";
         ctx.textAlign = "right";
-        ctx.fillText("Score: "+player.score, 400, 75);
+        ctx.fillText("Score: "+player.score, 480, 75);
     }
 
+    /*This function update the canvas when the player lost the game. 
+    */
     function displayGameOver() {
         var canvas = document.getElementById("canvas");
         var ctx = canvas.getContext("2d");
@@ -90,7 +94,7 @@ var Engine = (function(global) {
         ctx.fillText("GAME OVER", canvas.width/2, canvas.height/2);
 
         ctx.font = "20px Comic Sans MS";
-        ctx.fillStyle = "white";
+        ctx.fillStyle = "#003366";
         ctx.fillText("Press Space Bar to Play Again", canvas.width/2, canvas.height*2/3);
     }
 
@@ -131,11 +135,12 @@ var Engine = (function(global) {
         });
         player.update(dt);
     }    
-
+    /*This function determine if player share the same location with enemy
+    */
     function checkCollisions() {
         var collision = 0;
         allEnemies.forEach(function(enemy) {
-            if (collision == 0) {
+            if (collision === 0) {
                 if (player.checkCollisions(enemy)) {
                     collision++;
                 }
