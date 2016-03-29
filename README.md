@@ -1,6 +1,10 @@
-frontend-nanodegree-arcade-game
-===============================
+Arcade Game
 
-Students should use this [rubric](https://www.udacity.com/course/viewer/#!/c-nd001/l-2696458597/m-2687128535) for self-checking their submission.
+How to Play
+You move up, down, left and right the player with the arrow keys.
+The player has 5 lives at the beginning of the game.
+Each time the player reach the water he earns 600 points.
+If the player collides with a bug, he loose one life.
 
-For detailed instructions on how to get started, check out this [guide](https://docs.google.com/document/d/1v01aScPjSWCCWQLIpFqvg3-vXLH2e8_SZQKC8jNO0Dc/pub?embedded=true).
+
+
