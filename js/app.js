@@ -25,19 +25,17 @@ Enemy.prototype.restart = function() {
     this.radius = 30;
 };
 
-// Update the enemy's position, required method for game
-// Parameter: dt, a time delta between ticks
+// This method updates each enemy's position
+// Parameter dt is a time delta between animation frames.
 Enemy.prototype.update = function(dt) {
-    // You should multiply any movement by the dt parameter
-    // which will ensure the game runs at the same speed for
-    // all computers.
+   
     this.x += (this.speed * dt);
     if (this.x > 600) {
         this.restart();
     }
 };
 
-// Draw the enemy on the screen, required method for game
+// Draw the enemy on the screen.
 Enemy.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
@@ -48,15 +46,20 @@ Enemy.prototype.render = function() {
 var Player = function() {
     this.x = 200;
     this.y = 405;
+    this.score = 0;
     this.radius = 35;
-    this.lives =5;
+    this.lives = 5;
     this.sprite = 'images/char-boy.png';
 };
 
 
-Player.prototype.update = function() {
-
+Player.prototype.update = function(dt) {
 };
+
+Player.prototype.restart = function() {
+    this.x = 200;
+    this.y = 405;
+}
 
 Player.prototype.checkCollisions = function(enemy) {
     var dx = this.x - enemy.x;
@@ -64,18 +67,18 @@ Player.prototype.checkCollisions = function(enemy) {
     var distance = Math.sqrt(dx * dx + dy * dy);
     if (distance < this.radius + enemy.radius) {
         game.hit.play();
-        this.x = 200;
-        this.y = 405;
+        this.restart();
         this.lives--;
         if (this.lives === 0) {
             game.gameOver = true;
         };
+        return true;
     };
+    return false;
 };
 
 Player.prototype.render = function() {
-    document.getElementById('numberlives').innerHTML = this.lives;
-    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);        
 };
 
 Player.prototype.handleInput = function(direction) {
@@ -89,14 +92,21 @@ Player.prototype.handleInput = function(direction) {
             this.x += 101;
     }
     if (direction === 'up') {
-        if (this.y > 0)
-            this.y -= 83;
+        if (this.y > 0) {
+            this.y -= 83;            
+            if (this.y < 0) {
+                this.score += 600;
+                this.restart();
+            }
+        }
     }
     if (direction === 'down') {
         if (this.y < 405)
             this.y += 83;
     }
-    
+    if (direction === 'spacebar') {
+        window.location.reload();
+    }    
 };
 
 // Now instantiate your objects.
@@ -105,7 +115,6 @@ Player.prototype.handleInput = function(direction) {
 var allEnemies = [ new Enemy(), new Enemy(), new Enemy(), new Enemy() ];
 var player =  new Player();
 var game = new Game();
-
 
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.

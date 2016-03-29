@@ -25,6 +25,7 @@ var Engine = (function(global) {
         ctx = canvas.getContext('2d'),
         lastTime;
 
+
     /* This function serves as the kickoff point for the game loop itself
      * and handles properly calling the update and render methods.
      */
@@ -59,8 +60,38 @@ var Engine = (function(global) {
         win.requestAnimationFrame(main);
     }
 
-    function displayGameOver() {
+    function renderHeader() {
+        var canvas = document.getElementById("canvasHeader");
+        var ctx = canvas.getContext("2d");
+        ctx.clearRect(0,0,canvas.width, canvas.height);        
+        ctx.font = "30px Comic Sans MS";
+        ctx.fillStyle = "#FF6600";
+        ctx.textAlign = "center";
+        ctx.fillText("Arcade Game", canvas.width/2, canvas.height/2);
 
+        ctx.font = "18px Comic Sans MS";
+        ctx.fillStyle = "#FF6600";
+        ctx.textAlign = "left";
+        ctx.fillText("Lives: "+player.lives, 20, 75);
+
+        ctx.font = "18px Comic Sans MS";
+        ctx.fillStyle = "#FF6600";
+        ctx.textAlign = "right";
+        ctx.fillText("Score: "+player.score, 400, 75);
+    }
+
+    function displayGameOver() {
+        var canvas = document.getElementById("canvas");
+        var ctx = canvas.getContext("2d");
+        
+        ctx.font = "50px Comic Sans MS";
+        ctx.fillStyle = "#FF6600";
+        ctx.textAlign = "center";
+        ctx.fillText("GAME OVER", canvas.width/2, canvas.height/2);
+
+        ctx.font = "20px Comic Sans MS";
+        ctx.fillStyle = "white";
+        ctx.fillText("Press Space Bar to Play Again", canvas.width/2, canvas.height*2/3);
     }
 
     /* This function does some initial setup that should only occur once,
@@ -98,12 +129,17 @@ var Engine = (function(global) {
         allEnemies.forEach(function(enemy) {
             enemy.update(dt);
         });
-        player.update();
+        player.update(dt);
     }    
 
     function checkCollisions() {
+        var collision = 0;
         allEnemies.forEach(function(enemy) {
-            player.checkCollisions(enemy);
+            if (collision == 0) {
+                if (player.checkCollisions(enemy)) {
+                    collision++;
+                }
+            }
         });
     }
 
@@ -114,6 +150,9 @@ var Engine = (function(global) {
      * they are just drawing the entire screen over and over.
      */
     function render() {
+
+        renderHeader();
+
         /* This array holds the relative URL to the image used
          * for that particular row of the game level.
          */
