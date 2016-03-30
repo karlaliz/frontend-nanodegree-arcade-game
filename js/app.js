@@ -24,7 +24,7 @@ var Enemy = function() {
 //This method contains the variables and generates 
 //random positions for y.
 Enemy.prototype.restart = function() {
-    // Variables applied to each of our instances of 
+    //Variables applied to each of our instances of 
     //Enemy   
     var row = Math.floor((Math.random() * 3 ) +1);
     this.x = 0;
@@ -98,18 +98,19 @@ Player.prototype.render = function() {
 
 //Add movement to player
 Player.prototype.handleInput = function(direction) {
-
+    var tile_width = 101;
+    var tile_height =83;
     if (direction === 'left') {
         if (this.x > 0)
-            this.x -= 101;
+            this.x -= tile_width;
     }
     if (direction === 'right') {
-        if (this.x < 303)
-            this.x += 101;
+        if (this.x < 3*tile_width)
+            this.x += tile_width;
     }
     if (direction === 'up') {
         if (this.y > 0) {
-            this.y -= 83;            
+            this.y -= tile_height;            
             if (this.y < 0) {
                 game.score.play();
                 this.score += 600;
@@ -119,7 +120,7 @@ Player.prototype.handleInput = function(direction) {
     }
     if (direction === 'down') {
         if (this.y < 405)
-            this.y += 83;
+            this.y += tile_height;
     }
     if (direction === 'spacebar') {
         window.location.reload();
@@ -129,7 +130,9 @@ Player.prototype.handleInput = function(direction) {
 // create Player
 // create Enemies
 // create Game
-var allEnemies = [ new Enemy(), new Enemy(), new Enemy(), new Enemy() ];
+var allEnemies =[]
+    for (i=0; i<4; i++) 
+    allEnemies.push( new Enemy());
 var player =  new Player();
 var game = new Game();
 
